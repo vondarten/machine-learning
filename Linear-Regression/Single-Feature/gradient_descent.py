@@ -6,10 +6,11 @@
 '''
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 # dataset
-x_train = np.array([1.0, 2.0, 3.0, 4.5, 5.0])
-y_train = np.array([300.0, 500.0, 700.0, 720.0, 900.0])
+x_train = np.array([1.0, 2.0])
+y_train = np.array([300.0, 500.0])
 
 # cost function
 def cost_function(x, y, w, b):
@@ -27,6 +28,17 @@ def cost_function(x, y, w, b):
 # find del_J/del_w and del_J/del_b
 # grad = (dj_dw, dj_db)
 # with the gradient its possible to implement the gradient descent algorithm.
+
+def plot_cost_iteration(cost_hist):
+    fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, figsize=(12,4))
+    ax1.plot(cost_hist[:100])
+    ax1.set_title("Cost x iteration (first 100)")
+    ax1.set_ylabel("Cost"); ax2.set_ylabel("Cost")
+    ax1.set_xlabel('iteration step'); ax2.set_xlabel('iteration step')
+    ax2.plot(1000 + np.arange(len(cost_hist[1000:])), cost_hist[1000:])
+    ax2.set_title("Cost x iteration (end)")
+
+    plt.show()
 
 def calculate_gradient(x, y, w, b):
     m = len(x)
@@ -47,14 +59,23 @@ def gradient_descent(w_init, b_init, alpha, n_iter, x, y, cost_function, calcula
 
     w = w_init
     b = b_init
+    cost_over_time = []
+    parameters_over_time = []
+
+    # save all changes in j and w, b over time to compare, but up to 10.000 values
+
 
     for i in range(n_iter):
         dj_dw, dj_db = calculate_gradient(x, y, w, b)
         # updating both parameters 
         w = w - alpha*dj_dw
         b = b - alpha*dj_db
+        
+        if i<10000:
+            cost_over_time.append(cost_function(x, y, w, b))
+            parameters_over_time.append([w,b])
 
-    return w, b
+    return w, b, cost_over_time, parameters_over_time
 
 def make_prediction(w_found, b_found, feature):
     return w_found*feature + b_found
@@ -64,11 +85,13 @@ b_init = 0
 number_of_iterations = 10000
 alpha = 1.0e-2
 
-w_found, b_found = gradient_descent(w_init, b_init, alpha, number_of_iterations, x_train, y_train, cost_function, calculate_gradient)
+w_found, b_found, cost_over_time, wb_over_time = gradient_descent(w_init, b_init, alpha, number_of_iterations, x_train, y_train, cost_function, calculate_gradient)
 
-# for example, the price prediction for a 1200 sqft house
-value_to_predict = 1.2
+value_to_predict = float(input("House's size in sqft to predict: "))/1000
 
 predicted_value = make_prediction(w_found, b_found, value_to_predict)
 
+print(f"w found: {w_found}\nb found: {b_found}")
 print(f"Price prediction for {value_to_predict*1000} sqft: {predicted_value:0.2f} thousand dollars.")
+
+plot_cost_iteration(cost_over_time)
