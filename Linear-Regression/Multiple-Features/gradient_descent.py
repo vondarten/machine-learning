@@ -46,6 +46,23 @@ def cost_function(X, y, w, b):
         cost += (f_wb - y[i])**2
     return cost/(2*m)
 
+def plot_cost_iteration(cost_hist):
+    fig, (ax1, ax2) = plt.subplots(1, 2, constrained_layout=True, figsize=(12,4))
+    ax1.plot(cost_hist[:100])
+    ax1.set_title("Cost x iteration (first 100)")
+    ax2.set_title("Cost x iteration (end)")
+    ax1.set_ylabel("Cost"); ax2.set_ylabel("Cost")
+    ax1.set_xlabel('iteration step'); ax2.set_xlabel('iteration step')
+    ax2.plot(100 + np.arange(len(cost_hist[100:])), cost_hist[100:])
+
+    plt.show()
+
+def compare_results(X_train, w_found, b_found):
+    for i in range(X_train.shape[0]):
+        f_wb = np.dot(X_train[i], w_found) + b_found
+        error = -100 + (f_wb/y_train[i])*100
+        print(f"Prediction: {f_wb:.2f} ~ Target: {y_train[i]} - Error: {error:0.2f}%")
+
 # calculate del_J/del_w and del_J/_del_db
 
 def calculate_gradient(X, y, w, b):
@@ -71,6 +88,7 @@ def calculate_gradient(X, y, w, b):
 def gradient_descent(X, y, w_init, b_init, alpha, n_iter):
     w = w_init
     b = b_init
+    cost_hist = []
 
     for i in range(0, n_iter):
         # to update the parameters it's necessary compute the gradient
@@ -79,7 +97,11 @@ def gradient_descent(X, y, w_init, b_init, alpha, n_iter):
         #   in this case, all w_j terms are multiplied by alpha.
         w = w - (alpha*dj_dw)
         b = b - (alpha*dj_db)
-    return w, b
+
+        if i<10000:
+            cost_hist.append(cost_function(X, y, w, b))
+
+    return w, b, cost_hist
 
 
 # starting at b = 0 and w = [0, 0, 0, 0]
@@ -89,12 +111,10 @@ b_init = 0.0
 n_iter = 1000
 alpha = 5.0e-7
 
-w_found, b_found = gradient_descent(X_train, y_train, w_init, b_init, alpha, n_iter)
+w_found, b_found, cost_hist = gradient_descent(X_train, y_train, w_init, b_init, alpha, n_iter)
 
 print(f"The model found that these are the optimized w's and b for this data set:\nW: {w_found}; B: {b_found}")
 print("\nPredicting the known values to test the model's accuracy:")
 
-for i in range(X_train.shape[0]):
-    f_wb = np.dot(X_train[i], w_found) + b_found
-    error = -100 + (f_wb/y_train[i])*100
-    print(f"Prediction: {f_wb:.2f} ~ Target: {y_train[i]} - Error: {error:0.2f}%")
+compare_results(X_train, w_found, b_found)
+plot_cost_iteration(cost_hist)
