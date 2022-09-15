@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuralPaint</title>
+
+    <script src="https://kit.fontawesome.com/08de25c454.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    
+    <!-- Importing TF.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <!-- Importing tfjs-vis -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    
+    <script src="./script.js"></script>
+    <script type="module" src="./trained-model.js"></script>
+    <script src="./assets/p5.min.js"></script>
+
+     
+
+</head>
+
+<body>
+    <div class="app">
+        
+        <div class="model-area">
+            
+            <h3>JSON</h3>
+            <input class="input-tf" type="file" name="upload-json" id="upload-json">
+
+            <h3>BIN</h3>
+            <input  class="input-tf" type="file" name="upload-weights" id="upload-weights">
+
+            <button class="btn-load-tf">Load files</button>
+
+        </div>
+
+        <div class="controls">
+            <div class="title">Sketch</div>
+           
+            <div class="type">
+
+                <input type="radio" name="pen-type" id="pen-pencil" checked>
+                <label for="pen-pencil">
+                    <i class="fa fa-pencil"></i>
+                </label>
+
+                <input type="radio" name="pen-type" id="pen-brush">
+                <label for="pen-brush">
+                    <i class="fa fa-paint-brush"></i>
+                </label>
+
+            </div>
+            <div class="size">
+                <label for="pen-size">Size</label>
+                <input type="range" id="pen-size" min="1" max="50">
+            </div>
+
+            <div class="actions">
+                <button id="reset-canvas" onclick=resetScreen()>Reset</button>
+                <button id="save-canvas" onclick = saveDrawing()>Save</button>
+            </div>
+            
+        </div>
+        
+        <div id="canvas-wrapper"></div>
+        <div class="train-it-area">
+            <button class="btn-tf" onclick="location.href='training.html'">Train it yourself</button>
+        </div>
+    </div>    
+</body>
+</html>

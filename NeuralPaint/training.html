@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TensorFlow</title>
+
+    <script>
+        let text = "Training a Neural Network requires a lot of processing power and it can make your PC crash/heat up if you're not using a powerful hardware. Are you sure to proceed?"
+        
+        let result = confirm(text) == true ? 'Going to training session...' : 'Cancelled.' 
+
+        alert(result)
+        
+        if(result == 'Cancelled.') location.replace("index.html")
+
+    </script>
+
+    <!-- Importing TF.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <!-- Importing tfjs-vis -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <!-- Importing data file -->
+    <script src="./assets/data.js" type="module"></script>
+    <!-- Import the main script file -->
+    <script src="./training-tf.js" type="module"></script>
+
+</head>
+<body>
+    
+</body>
+</html>
