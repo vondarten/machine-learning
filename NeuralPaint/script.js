@@ -17,11 +17,9 @@ function mouseDragged() {
     fill(defaultColor)
     stroke(defaultColor)
 
-    if(type == "pencil") {
-        line(pmouseX, pmouseY, mouseX, mouseY)
-    } else {
-        ellipse(mouseX, mouseY, size, size)
-    }
+    
+    ellipse(mouseX, mouseY, size, size)
+    
 }
 
 function resetScreen() {
@@ -29,5 +27,9 @@ function resetScreen() {
 }
 
 function saveDrawing(){
-    saveCanvas(canvas, "sketch", "png")
+    //saveCanvas(canvas, "sketch", "png")
+    const img = get()
+    img.resize(28,28)
+    console.log(img)
+    img.save(frameCount, '.png')
 }
