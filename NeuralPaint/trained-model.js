@@ -3,12 +3,33 @@ import {MnistData} from './assets/data.js';
 document.querySelector('.btn-load-tf').addEventListener('click', run)
 const classNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
 
+const testemnist = new MnistData()
+await testemnist.load()
+console.log(testemnist.trainImages.length/784)
+console.log(testemnist.testImages.length/784)
+
+function predictSketch(model, data) {
+    //
+}
+
 function doPrediction(model, data){
     const IMAGE_WIDTH = 28;
     const IMAGE_HEIGHT = 28;
     const testData = data.nextTestBatch(500);
+    // 500 exemplos com 28x28 e 1 canal
+    // para 1 exemplo, será [1, 28, 28, 1]
     const testxs = testData.xs.reshape([500, IMAGE_WIDTH, IMAGE_HEIGHT, 1]);
+    
+    const testBytes = new Float32Array(784).fill(0)
+
+    const tensor = tf.tensor2d(testBytes, [1, 784])
+
+    const preds1 = model.predict(tensor.reshape([1, IMAGE_WIDTH, IMAGE_HEIGHT, 1]))
+
+    console.log(`Prediction: ${preds1.dataSync()}`)
+
     const labels = testData.labels.argMax(-1);
+
     const preds = model.predict(testxs).argMax(-1);
     testxs.dispose();
     return [preds, labels];
@@ -48,6 +69,6 @@ async function run() {
     tfvis.show.modelSummary({name: 'Model Architecture', tab: 'Model'}, model)
     const data = await getData()
     await showAccuracy(model, data);
-    await showConfusion(model, data);
+   // await showConfusion(model, data);
 
 }

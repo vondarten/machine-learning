@@ -6,17 +6,16 @@ function setup() {
     let canvas = createCanvas(650, 600)
     canvas.parent("canvas-wrapper")
     background(255)
+    
 }
 
 function mouseDragged() {
     
-    // only B&W images on simple MNIST 
     let defaultColor = "#000";
     let type = _("#pen-pencil").checked ? "pencil":"brush"
     let size = parseInt(_("#pen-size").value)
     fill(defaultColor)
     stroke(defaultColor)
-
     
     ellipse(mouseX, mouseY, size, size)
     
@@ -31,5 +30,9 @@ function saveDrawing(){
     const img = get()
     img.resize(28,28)
     console.log(img)
-    img.save(frameCount, '.png')
+    loadPixels()
+    
+    updatePixels()
+
+    //img.save(frameCount, '.png')
 }

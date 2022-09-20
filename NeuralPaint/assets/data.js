@@ -127,6 +127,7 @@
  
        const image =
            data[0].slice(idx * IMAGE_SIZE, idx * IMAGE_SIZE + IMAGE_SIZE);
+          
        batchImagesArray.set(image, i * IMAGE_SIZE);
  
        const label =
@@ -135,6 +136,7 @@
      }
  
      const xs = tf.tensor2d(batchImagesArray, [batchSize, IMAGE_SIZE]);
+    
      const labels = tf.tensor2d(batchLabelsArray, [batchSize, NUM_CLASSES]);
  
      return {xs, labels};
