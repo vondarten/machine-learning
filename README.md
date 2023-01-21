@@ -1,2 +1,2 @@
 # Machine Learning 
-Personal studies on Machine Learning 
+Implementing algorithms used in machine learning models.
